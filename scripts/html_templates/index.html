@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!--
+ Copyright (c) 2025 Nokia All rights reserved.
+ Licensed under the BSD 3-Clause License
+ SPDX-License-Identifier: BSD-3-Clause
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/png;base64,✅" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Open%20Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>Number Verification</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-container img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-family: 'Open Sans', sans-serif;
+            margin-bottom: 20px;
+            color: #0047ab
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .separator {
+            margin: 20px 0;
+            border: 0;
+            height: 1px;
+            background-color: #ddd;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 16px;
+            background-color: #0047ab;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #003580;
+        }
+
+        .description {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-left: 4px solid #0047ab;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <span style="font-size: 100px;">☑️</span>
+        <h1>Phone Number Verification</h1>
+
+        {% if error %}
+        <h3 style="color: #ff6666;">Error occured during phone number verification</h3>
+        {% endif %}
+
+        {% if show_result is not defined %}
+        {% elif show_result == True %}
+        <span style="font-size: 50px;">✅</span>
+        <h3>Phone number has been successfully verified</h3>
+        {% else %}
+        <span style="font-size: 50px;">❌</span>
+        <h3>Phone number has failed to be verified</h3>
+        {% endif %}
+
+
+        <form action="/submit" method="post">
+            <div>
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" placeholder="+13334445555"
+                    value="{{ phone_number | default('') }}" required
+                    pattern="^\+\d{1,2}\s?\(?\d{2,3}\)?[\s.\-\d]{3,10}"
+                    title="Phone number must start with a '+' followed by a country code and a valid number. Example: +13334445555">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+    </div>
+</body>
+
+</html>

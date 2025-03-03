@@ -1,0 +1,12 @@
+uvicorn
+fastapi
+pydantic
+starlette
+jinja2
+pycgi
+
+requests 
+httpx[http2]
+asyncio
+python-multipart
+urllib3

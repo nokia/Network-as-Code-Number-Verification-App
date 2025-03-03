@@ -1,0 +1,21 @@
+# Copyright (c) 2025 Nokia All rights reserved.
+# Licensed under the BSD 3-Clause License
+# SPDX-License-Identifier: BSD-3-Clause
+
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  labels:
+    {{- include "number-verification-backend-app.labels" . | indent 4 }}
+  name: {{ template "number-verification-backend-app.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+data:
+    INGRESS_URL: {{ .Values.ingress.url | quote }}
+    NAC_AUTH_CLIENTCREDENTIALS_URL: {{ .Values.nacApis.authClientcredentials.url | quote }}
+    NAC_AUTH_CLIENTCREDENTIALS_HOST: {{ .Values.nacApis.authClientcredentials.host | quote }}
+    NAC_WELLKNOWN_METADATA_URL: {{ .Values.nacApis.wellknownMetadata.url | quote }}
+    NAC_WELLKNOWN_METADATA_HOST: {{ .Values.nacApis.wellknownMetadata.host | quote }}
+    NAC_NUMBER_VERIFICATION_URL: {{ .Values.nacApis.numberVerification.url | quote }}
+    NAC_NUMBER_VERIFICATION_HOST: {{ .Values.nacApis.numberVerification.host | quote }}
+    ALLOWED_PHONE_NUMBERS: "{{ .Values.allowedPhoneNumbers }}"
+    HTTP_CLIENT_PROXY: {{ .Values.httpClientProxy | default "" | quote }}

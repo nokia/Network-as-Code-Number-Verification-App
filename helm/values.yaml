@@ -1,0 +1,46 @@
+# Copyright (c) 2025 Nokia All rights reserved.
+# Licensed under the BSD 3-Clause License
+# SPDX-License-Identifier: BSD-3-Clause
+
+global:
+  registry: #REGISTRY_URL#
+
+image:
+  name: #IMAGE_NAME#
+  tag: #IMAGE_TAG#
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: # 100m
+    memory: # 256Mi
+  requests:
+    cpu: # 100m
+    memory: # 256Mi
+
+ingress:
+  url:
+
+apiSecretRef: api-credentials
+
+nacApis:
+  authClientcredentials:
+    url: "https://nac-authorization-server.p-eu.rapidapi.com"
+    host: "nac-authorization-server.nokia.rapidapi.com"
+  wellknownMetadata:
+    url: "https://well-known-metadata.p-eu.rapidapi.com"
+    host: "well-known-metadata.nokia.rapidapi.com"
+  numberVerification:
+    url: "https://number-verification.p-eu.rapidapi.com"
+    host: "number-verification.nokia.rapidapi.com"
+
+allowedPhoneNumbers: # You might want to set the allowed numbers if making demonstrations. Not needed on live use.
+  - "+36373334444"
+  - "+36374443333"
+
+httpClientProxy: # Optional web proxy URL, if needed in your environment.
+
+
+replicaCount: 1
+nodeSelector: {}
+tolerations: []

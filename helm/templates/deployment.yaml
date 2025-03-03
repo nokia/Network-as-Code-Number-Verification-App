@@ -1,0 +1,53 @@
+# Copyright (c) 2025 Nokia All rights reserved.
+# Licensed under the BSD 3-Clause License
+# SPDX-License-Identifier: BSD-3-Clause
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "number-verification-backend-app.fullname" . }}
+  labels:
+    {{- include "number-verification-backend-app.labels" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "number-verification-backend-app.matchLabels" . | indent 6 }}
+  replicas: {{ .Values.replicaCount | default 1 }}
+  template:
+    metadata:
+      labels:
+        {{- include "number-verification-backend-app.labels" . | indent 8 }}
+      annotations:
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: number-verification-backend-app
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if .Values.global.registry  }}
+        image: "{{ .Values.global.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        {{- else }}
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        {{- end }}
+        command: ["python", "/home/serveruser/number-verification-backend-app/main.py"]
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8088
+          failureThreshold: 12
+          periodSeconds: 5
+        resources: {{- toYaml .Values.resources | nindent 12 }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsUser: 1000
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+            - ALL
+        envFrom:
+          - configMapRef:
+              name: {{ template "number-verification-backend-app.fullname" . }}
+          - secretRef:
+              name: {{ .Values.apiSecretRef }}

@@ -1,0 +1,17 @@
+# Copyright (c) 2025 Nokia All rights reserved.
+# Licensed under the BSD 3-Clause License
+# SPDX-License-Identifier: BSD-3-Clause
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "number-verification-backend-app.fullname" . }}
+  labels:
+    {{- include "number-verification-backend-app.labels" . | indent 4 }}
+spec:
+  selector:
+    {{- include "number-verification-backend-app.matchLabels" . | indent 4 }}
+  ports:
+  - name: fastapi
+    protocol: "TCP"
+    port: 8088
